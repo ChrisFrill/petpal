@@ -1,5 +1,6 @@
 import 'package:PetPal/blocs/chat/chat_bloc.dart';
 import 'package:PetPal/blocs/chat/chat_state.dart';
+import 'package:PetPal/pages/private_chat.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -50,15 +51,26 @@ class _ChatUsersState extends State<ChatUsers> {
               } else {
                 return ListView.builder(
                   itemCount: state.chats.length,
-                  itemBuilder: (BuildContext ctxt, int index) => ListTile(title: Text(state.chats[index].animal.name),
-                        leading: CircleAvatar(
-                            backgroundImage: NetworkImage(Uri.http(
-                                    "10.27.99.28:8080",
-                                    "/assets/" +
-                                        state.chats[index].animal.photoPath)
-                                .toString())),
-                                trailing: Icon(Icons.cancel, color: Colors.red,),
+                  itemBuilder: (BuildContext ctxt, int index) => ListTile(
+                      title: Text(state.chats[index].animal.name),
+                      leading: CircleAvatar(
+                          backgroundImage: NetworkImage(Uri.http(
+                                  "10.27.99.28:8080",
+                                  "/assets/" +
+                                      state.chats[index].animal.photoPath)
+                              .toString())),
+                      trailing: Icon(
+                        Icons.cancel,
+                        color: Colors.red,
                       ),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PrivateChat(peerId: index,)),
+                        );
+                      }),
                   scrollDirection: Axis.vertical,
                 );
               }

@@ -1,4 +1,3 @@
-
 import 'package:PetPal/models/animal/animal.dart';
 
 class LikedAnimalsList {

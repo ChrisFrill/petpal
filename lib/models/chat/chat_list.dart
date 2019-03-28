@@ -1,5 +1,3 @@
-
-
 import 'package:PetPal/models/chat/chat.dart';
 
 class ChatList {

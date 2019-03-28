@@ -16,13 +16,15 @@ class FavouriteBloc extends Bloc<LikeEvent, FavouriteState> {
     if (event == LikeEvent.fetch) {
       try {
         if (currentState is FavouriteUninitialized) {
+          print("object");
+          print(PetPalApi().getLikedPets().toString());
           final favourites = await PetPalApi().getLikedPets();
           yield FavouriteLoaded(favourites: favourites);
         }
         if (currentState is FavouriteLoaded) {
           final favourites = await PetPalApi().getLikedPets();
           yield favourites.isEmpty
-              ? currentState.copyWith(hasReachedMax: true)
+              ? currentState.copyWith()
               : FavouriteLoaded(
                   favourites: currentState.favourites + favourites,
                 );
@@ -32,7 +34,4 @@ class FavouriteBloc extends Bloc<LikeEvent, FavouriteState> {
       }
     }
   }
-  
-
-  
 }

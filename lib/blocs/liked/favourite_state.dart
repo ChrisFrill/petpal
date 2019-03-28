@@ -23,7 +23,6 @@ class FavouriteLoaded extends FavouriteState {
 
   FavouriteLoaded copyWith({
     List<Animal> favourites,
-    bool hasReachedMax,
   }) {
     return FavouriteLoaded(
       favourites: favourites ?? this.favourites,

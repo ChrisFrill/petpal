@@ -71,13 +71,16 @@ class PetPalApi {
     Dio dio = new Dio();
 
     FormData formData = new FormData.from({
-      "file": new UploadFileInfo(new File(fileName.substring(7, fileName.length-1)), "asd.jpg")
+      "file": new UploadFileInfo(
+          new File(fileName.substring(7, fileName.length - 1)), "asd.jpg")
     });
 
-    final response = await dio.post(url.toString(), data: formData, options: Options(headers: {
-        HttpHeaders.authorizationHeader:
-            "Bearer: " + await TokenHandler().getMobileToken(),
-      }));
+    final response = await dio.post(url.toString(),
+        data: formData,
+        options: Options(headers: {
+          HttpHeaders.authorizationHeader:
+              "Bearer: " + await TokenHandler().getMobileToken(),
+        }));
 
     // var body = {"file": fileName};
     //  response = await http.post(url,
@@ -159,6 +162,7 @@ class PetPalApi {
     final List<dynamic> responseJson = json.decode(response.body);
     if (response.statusCode == 200) {
       print(responseJson);
+      
     } else {
       print(response.statusCode);
     }
@@ -167,7 +171,7 @@ class PetPalApi {
   }
 
   Future<List<Animal>> getPetsToAdopt() async {
-    final url = Uri.http(baseUrl, "/pets/adoptable");
+    final url = Uri.http(baseUrl, "/pets/underadoption");
 
     final response = await http.get(
       url,
@@ -201,11 +205,34 @@ class PetPalApi {
     final List<dynamic> responseJson = json.decode(response.body);
     if (response.statusCode == 200) {
       print("Reached 1");
+      print(response.toString());
+      print(responseJson);
     } else {
       print(response.statusCode);
     }
-    print(ChatList.fromJSON(responseJson).toString());
     return ChatList.fromJSON(responseJson).chats;
+  }
+
+  Future<Chat> getUserChat(int id) async {
+    final url = Uri.http(baseUrl, "/chats/$id");
+
+    final response = await http.get(
+      url,
+      headers: {
+        HttpHeaders.authorizationHeader:
+            "Bearer: " + await TokenHandler().getMobileToken(),
+      },
+    );
+
+    final Map<String ,dynamic> responseJson = json.decode(response.body);
+    if (response.statusCode == 200) {
+      print("Reached 1");
+      print(response.toString());
+      print(responseJson);
+    } else {
+      print(response.statusCode);
+    }
+    return Chat.fromJSON(responseJson);
   }
 
   likeAnimal(BuildContext context, int id) async {

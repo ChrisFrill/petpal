@@ -57,7 +57,7 @@ class _LikedPetsState extends State<LikedPets> {
                         title: Text(state.favourites[index].name),
                         leading: CircleAvatar(
                             backgroundImage: NetworkImage(Uri.http(
-                                    "192.168.0.206:8080",
+                                    "10.27.99.28:8080",
                                     "/assets/" +
                                         state.favourites[index].photoPath)
                                 .toString())),

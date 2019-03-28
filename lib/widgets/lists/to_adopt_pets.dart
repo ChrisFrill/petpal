@@ -56,7 +56,7 @@ class _ToAdoptPetsState extends State<ToAdoptPets> {
                         title: Text(state.petsToAdopt[index].name),
                         leading: CircleAvatar(
                             backgroundImage: NetworkImage(Uri.http(
-                                    "192.168.0.206:8080",
+                                    "10.27.99.28:8080",
                                     "/assets/" +
                                         state.petsToAdopt[index].photoPath)
                                 .toString())),
