@@ -72,6 +72,7 @@ class _ChatUsersState extends State<ChatUsers> {
                               builder: (context) => PrivateChat(
                                     peerId: state.chats[index].id,
                                     username: state.chats[index].animal.name,
+                                    photoPath: state.chats[index].animal.photoPath,
                                   )),
                         );
                       }),

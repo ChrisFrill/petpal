@@ -1,4 +1,5 @@
 import 'package:PetPal/models/animal/animal.dart';
+import 'package:PetPal/models/chat/message.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class PrivateChatEvent extends Equatable {
@@ -14,6 +15,13 @@ class DeletePet extends PrivateChatEvent {
 
   @override
   String toString() => 'DeletePet { Pet: $chat }';
+}
+
+class AddMessage extends PrivateChatEvent {
+  final Message message;
+
+  AddMessage(this.message) :super([message]);
+
 }
 
 class FetchPrivateChat extends PrivateChatEvent {

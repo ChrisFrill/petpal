@@ -22,7 +22,7 @@ class PrivateChatLoaded extends PrivateChatState {
   }) : super([chat]);
 
   PrivateChatLoaded copyWith({
-    List<Chat> chats,
+    List<Chat> chat,
   }) {
     return PrivateChatLoaded(
       chat: chat ?? this.chat,

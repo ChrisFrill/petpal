@@ -6,7 +6,7 @@ class Message extends Object {
   User user;
   String message;
 
-  Message({this.id, this.user});
+  Message({this.id, this.user, this.message});
 
   Message.fromJSON(Map<String, dynamic> json)
       : id = json['id'],

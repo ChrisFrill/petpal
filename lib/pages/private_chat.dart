@@ -6,6 +6,7 @@ import 'package:PetPal/blocs/chat/private_chat_bloc.dart';
 import 'package:PetPal/blocs/chat/private_chat_event.dart';
 import 'package:PetPal/blocs/chat/private_chat_state.dart';
 import 'package:PetPal/models/chat/chat.dart';
+import 'package:PetPal/models/chat/message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -14,9 +15,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 class PrivateChat extends StatelessWidget {
   final int peerId;
-  String username;
+  final String username;
+  final String photoPath;
 
-  PrivateChat({@required this.peerId, this.username});
+  PrivateChat(
+      {@required this.peerId,
+      @required this.username,
+      @required this.photoPath});
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +39,7 @@ class PrivateChat extends StatelessWidget {
         ),
         body: new ChatScreen(
           peerId: peerId,
+          photoPath: photoPath,
         ),
       ),
     );
@@ -42,17 +48,21 @@ class PrivateChat extends StatelessWidget {
 
 class ChatScreen extends StatefulWidget {
   final int peerId;
+  final String photoPath;
 
-  ChatScreen({Key key, @required this.peerId}) : super(key: key);
+  ChatScreen({Key key, @required this.peerId, this.photoPath})
+      : super(key: key);
 
   @override
-  State createState() => new ChatScreenState(peerId: peerId);
+  State createState() =>
+      new ChatScreenState(peerId: peerId, photoPath: photoPath);
 }
 
 class ChatScreenState extends State<ChatScreen> {
   final PrivateChatBloc _privateChatBloc = PrivateChatBloc();
+  final String photoPath;
 
-  ChatScreenState({Key key, @required this.peerId});
+  ChatScreenState({Key key, @required this.peerId, @required this.photoPath});
   int peerId;
   int id;
   var listMessage;
@@ -79,7 +89,7 @@ class ChatScreenState extends State<ChatScreen> {
     print(event);
     _privateChatBloc.dispatch(event);
 
-    const oneSec = const Duration(seconds: 5);
+    const oneSec = const Duration(milliseconds: 500);
     timer =
         Timer.periodic(oneSec, (Timer t) => _privateChatBloc.dispatch(event));
     groupChatId = '';
@@ -129,32 +139,30 @@ class ChatScreenState extends State<ChatScreen> {
           children: <Widget>[
             Row(
               children: <Widget>[
-                isLastMessageLeft(index)
-                    ? Material(
-                        child: CachedNetworkImage(
-                          placeholder: (context, url) => Container(
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 1.0,
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                      Colors.deepPurple),
-                                ),
-                                width: 35.0,
-                                height: 35.0,
-                                padding: EdgeInsets.all(10.0),
-                              ),
-                          imageUrl: Uri.http("10.27.99.28:8080",
-                                  "/assets/" + chat.animal.photoPath)
-                              .toString(),
+                Material(
+                  child: CachedNetworkImage(
+                    placeholder: (context, url) => Container(
+                          child: CircularProgressIndicator(
+                            strokeWidth: 1.0,
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                                Colors.deepPurple),
+                          ),
                           width: 35.0,
                           height: 35.0,
-                          fit: BoxFit.cover,
+                          padding: EdgeInsets.all(10.0),
                         ),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(18.0),
-                        ),
-                        clipBehavior: Clip.hardEdge,
-                      )
-                    : Container(width: 35.0),
+                    imageUrl:
+                        Uri.http("10.27.99.28:8080", "/assets/" + photoPath)
+                            .toString(),
+                    width: 35.0,
+                    height: 35.0,
+                    fit: BoxFit.cover,
+                  ),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(18.0),
+                  ),
+                  clipBehavior: Clip.hardEdge,
+                ),
                 Container(
                   child: Text(
                     chat.messageList.messages[index].message,
@@ -196,7 +204,7 @@ class ChatScreenState extends State<ChatScreen> {
   bool isLastMessageLeft(int index) {
     if ((index > 0 &&
             listMessage != null &&
-            listMessage[index - 1]['idFrom'] == id) ||
+            listMessage[index - 1]['idFrom'] == peerId) ||
         index == 0) {
       return true;
     } else {
@@ -226,7 +234,7 @@ class ChatScreenState extends State<ChatScreen> {
 
     return WillPopScope(
       child: Container(
-          margin:EdgeInsets.only(top: 20.0),
+          margin: EdgeInsets.only(top: 20.0),
           height: 600,
           child: Column(
             children: <Widget>[
@@ -266,7 +274,7 @@ class ChatScreenState extends State<ChatScreen> {
                           itemBuilder: (context, index) =>
                               buildItem(index, state.chat),
                           itemCount: state.chat.messageList.messages.length,
-                          reverse: false,
+                          reverse: true,
                           controller: listScrollController,
                         );
                       }
@@ -302,15 +310,18 @@ class ChatScreenState extends State<ChatScreen> {
         children: <Widget>[
           // Edit text
           Flexible(
-            child: Container(
-              child: TextField(
-                style: TextStyle(color: Colors.deepPurple, fontSize: 15.0),
-                controller: textEditingController,
-                decoration: InputDecoration.collapsed(
-                  hintText: 'Type your message...',
-                  hintStyle: TextStyle(color: Colors.grey),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: Container(
+                child: TextField(
+                  style: TextStyle(color: Colors.deepPurple, fontSize: 15.0),
+                  controller: textEditingController,
+                  decoration: InputDecoration.collapsed(
+                    hintText: 'Type your message...',
+                    hintStyle: TextStyle(color: Colors.grey),
+                  ),
+                  focusNode: focusNode,
                 ),
-                focusNode: focusNode,
               ),
             ),
           ),
@@ -321,7 +332,10 @@ class ChatScreenState extends State<ChatScreen> {
               margin: new EdgeInsets.symmetric(horizontal: 8.0),
               child: new IconButton(
                 icon: new Icon(Icons.send),
-                onPressed: () => onSendMessage(textEditingController.text, 0),
+                onPressed: () {
+                  onSendMessage(textEditingController.text, 0);
+                  //_privateChatBloc.dispatch(AddMessage(Message(message: textEditingController.text)));
+                },
                 color: Colors.deepOrange,
               ),
             ),
