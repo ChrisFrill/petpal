@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:PetPal/api/tokenhandler.dart';
 import 'package:PetPal/models/animal/animal.dart';
 import 'package:PetPal/models/animal/liked_animals_list.dart';
@@ -66,13 +68,13 @@ class PetPalApi {
     }
   }
 
-  void uploadFile(BuildContext context, String fileName) async {
+  void uploadFile(BuildContext context, String path, String filename) async {
     final url = Uri.http(baseUrl, "/uploadFile");
     Dio dio = Dio();
 
     FormData formData = FormData.from({
       "file": UploadFileInfo(
-          File(fileName.substring(7, fileName.length - 1)), "asd.jpg")
+          File(path.substring(7, path.length - 1)), filename)
     });
 
     final response = await dio.post(url.toString(),
@@ -122,7 +124,8 @@ class PetPalApi {
       Navigator.of(context).pushReplacementNamed('/pets');
     } else {
       print(response.statusCode);
-      showDialogSingleButton(context, "Unable to post pet", "Something went wrong.", "OK");
+      showDialogSingleButton(
+          context, "Unable to post pet", "Something went wrong.", "OK");
       return null;
     }
   }
@@ -248,7 +251,8 @@ class PetPalApi {
       print(response.statusCode);
     } else {
       print(response.statusCode);
-      showDialogSingleButton(context, "Unable to post message", "Something went wrong.", "OK");
+      showDialogSingleButton(
+          context, "Unable to post message", "Something went wrong.", "OK");
       return null;
     }
   }

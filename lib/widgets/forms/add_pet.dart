@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:PetPal/api/petpal_api.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
@@ -25,7 +27,7 @@ class AddPetFormState extends State<AddPetForm> {
 
   Future getImage() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
-        print("image");
+    print("image");
     print(image);
     setState(() {
       _image = image;
@@ -57,13 +59,13 @@ class AddPetFormState extends State<AddPetForm> {
               key: _fbKey,
               autovalidate: false,
               controls: [
-                
                 FormBuilderInput.textField(
                   decoration: InputDecoration(labelText: "Name"),
                   type: FormBuilderInput.TYPE_TEXT,
                   attribute: "name",
                   min: 3,
-                ),FormBuilderInput.dropdown(
+                ),
+                FormBuilderInput.dropdown(
                   attribute: "type",
                   decoration: InputDecoration(labelText: "Type"),
                   options: [
@@ -113,10 +115,13 @@ class AddPetFormState extends State<AddPetForm> {
                 onPressed: () {
                   _fbKey.currentState.save();
                   if (_fbKey.currentState.validate()) {
-                    print('validationSucceded');
-                    _fbKey.currentState.value["photoPath"] = _image.path.toString();
-                    print(_fbKey.currentState.value);
-                    PetPalApi().uploadFile(context, _image.toString());
+                    var rng = new Random();
+
+                    String filename = rng.nextInt(10000).toString() + ".jpg";
+                    _fbKey.currentState.value["photoPath"] =
+                        filename;
+                        print(_fbKey.currentState.value);
+                    PetPalApi().uploadFile(context, _image.toString(), filename);
                     PetPalApi().addPet(context, _fbKey.currentState.value);
                   } else {
                     print("External FormValidation failed");

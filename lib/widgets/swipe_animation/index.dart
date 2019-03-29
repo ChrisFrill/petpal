@@ -229,7 +229,6 @@ class _SwipeCardState extends State<SwipeCard> with TickerProviderStateMixin {
                             context,
                             state.pets[state.pets.length - 1].id,
                           );
-                          animal = state.pets[state.pets.length - 1];
                           swipeRight();
                         },
                       ),
