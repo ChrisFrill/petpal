@@ -1,15 +1,15 @@
 class User extends Object {
   int id;
-  String username;
+  String name;
   String email;
 
-  User({this.id, this.username});
+  User({this.id, this.name});
 
   User.fromJSON(Map<String, dynamic> json)
       : id = json['id'],
-        username = json['username'],
+        name = json['name'],
         email = json['email'];
 
   @override
-  String toString() => '$runtimeType($id, name: $username, $email)';
+  String toString() => '$runtimeType($id, name: $name, $email)';
 }

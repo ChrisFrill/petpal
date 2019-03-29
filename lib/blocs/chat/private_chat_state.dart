@@ -4,32 +4,32 @@ abstract class PrivateChatState  {
   PrivateChatState([List props = const []]);
 }
 
-class ChatUninitialized extends PrivateChatState {
+class PrivateChatUninitialized extends PrivateChatState {
   @override
   String toString() => 'ChatUninitialized';
 }
 
-class ChatError extends PrivateChatState {
+class PrivateChatError extends PrivateChatState {
   @override
   String toString() => 'ChatError';
 }
 
-class ChatLoaded extends PrivateChatState {
-  final List<Chat> chats;
+class PrivateChatLoaded extends PrivateChatState {
+  final Chat chat;
 
-  ChatLoaded({
-    this.chats,
-  }) : super([chats]);
+  PrivateChatLoaded({
+    this.chat,
+  }) : super([chat]);
 
-  ChatLoaded copyWith({
+  PrivateChatLoaded copyWith({
     List<Chat> chats,
   }) {
-    return ChatLoaded(
-      chats: chats ?? this.chats,
+    return PrivateChatLoaded(
+      chat: chat ?? this.chat,
     );
   }
 
   @override
   String toString() =>
-      'ChatLoaded { chats: ${chats.length}}';
+      'ChatLoaded { chat: $chat}';
 }

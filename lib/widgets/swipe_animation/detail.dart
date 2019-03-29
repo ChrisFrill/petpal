@@ -119,7 +119,7 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
                                     image: NetworkImage(Uri.http(
-                                            "10.27.99.13:8080",
+                                            "10.27.99.28:8080",
                                             "/assets/" + type.photoPath)
                                         .toString()),
                                     fit: BoxFit.cover,
@@ -231,9 +231,7 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
                                       ],
                                     ),
                                   ),
-                                  Container(
-                                    height: 100.0,
-                                  )
+                                  
                                 ],
                               ),
                             ),
@@ -242,68 +240,7 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
                       ),
                     ],
                   ),
-                  Container(
-                      width: 600.0,
-                      height: 80.0,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border(
-                          top: BorderSide(
-                            color: Colors.deepPurpleAccent,
-                            width: 2,
-                          ),
-                        ),
-                      ),
-                      alignment: Alignment.center,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.all(10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: <Widget>[
-                                Tooltip(
-                                  child: FlatButton.icon(
-                                    icon: IconTheme(
-                                      data: IconThemeData(
-                                          color: Colors.red, size: 50),
-                                      child: Icon(Icons.close),
-                                    ),
-                                    label: Text(""),
-                                    onPressed: () {},
-                                  ),
-                                  message: "Not interested",
-                                ),
-                                Tooltip(
-                                  child: FlatButton.icon(
-                                    icon: IconTheme(
-                                      data: IconThemeData(
-                                          color: Colors.deepOrange, size: 50),
-                                      child: Icon(Icons.favorite),
-                                    ),
-                                    label: Text(""),
-                                    onPressed: () {},
-                                  ),
-                                  message: "Like",
-                                ),
-                                Tooltip(
-                                  child: FlatButton.icon(
-                                    icon: IconTheme(
-                                      data: IconThemeData(
-                                          color: Colors.green, size: 50),
-                                      child: Icon(Icons.pets),
-                                    ),
-                                    label: Text(""),
-                                    onPressed: () {},
-                                  ),
-                                  message: "Adopt",
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ))
+                  
                 ],
               ),
             ),

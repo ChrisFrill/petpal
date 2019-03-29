@@ -26,7 +26,7 @@ class ChatBloc extends Bloc<LikeEvent, ChatState> {
           yield chats.isEmpty
               ? currentState.copyWith()
               : ChatLoaded(
-                  chats: currentState.chats + chats,
+                  chats: currentState.chats,
                 );
         }
       } catch (_) {

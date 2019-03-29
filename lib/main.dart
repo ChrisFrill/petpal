@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:PetPal/blocs/chat/chat_bloc.dart';
 import 'package:PetPal/pages/add_pet.dart';
 import 'package:PetPal/pages/authentication.dart';
 import 'package:PetPal/pages/chat.dart';

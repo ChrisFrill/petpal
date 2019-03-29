@@ -68,11 +68,11 @@ class PetPalApi {
 
   void uploadFile(BuildContext context, String fileName) async {
     final url = Uri.http(baseUrl, "/uploadFile");
-    Dio dio = new Dio();
+    Dio dio = Dio();
 
-    FormData formData = new FormData.from({
-      "file": new UploadFileInfo(
-          new File(fileName.substring(7, fileName.length - 1)), "asd.jpg")
+    FormData formData = FormData.from({
+      "file": UploadFileInfo(
+          File(fileName.substring(7, fileName.length - 1)), "asd.jpg")
     });
 
     final response = await dio.post(url.toString(),
@@ -122,7 +122,7 @@ class PetPalApi {
       Navigator.of(context).pushReplacementNamed('/pets');
     } else {
       print(response.statusCode);
-      showDialogSingleButton(context, "Unable to post pet", "Asd", "OK");
+      showDialogSingleButton(context, "Unable to post pet", "Something went wrong.", "OK");
       return null;
     }
   }
@@ -162,7 +162,6 @@ class PetPalApi {
     final List<dynamic> responseJson = json.decode(response.body);
     if (response.statusCode == 200) {
       print(responseJson);
-      
     } else {
       print(response.statusCode);
     }
@@ -204,9 +203,7 @@ class PetPalApi {
 
     final List<dynamic> responseJson = json.decode(response.body);
     if (response.statusCode == 200) {
-      print("Reached 1");
       print(response.toString());
-      print(responseJson);
     } else {
       print(response.statusCode);
     }
@@ -214,6 +211,7 @@ class PetPalApi {
   }
 
   Future<Chat> getUserChat(int id) async {
+    print(id);
     final url = Uri.http(baseUrl, "/chats/$id");
 
     final response = await http.get(
@@ -224,15 +222,35 @@ class PetPalApi {
       },
     );
 
-    final Map<String ,dynamic> responseJson = json.decode(response.body);
+    final Map<String, dynamic> responseJson = json.decode(response.body);
     if (response.statusCode == 200) {
-      print("Reached 1");
       print(response.toString());
-      print(responseJson);
     } else {
       print(response.statusCode);
     }
     return Chat.fromJSON(responseJson);
+  }
+
+  addMessage(BuildContext context, Map<String, dynamic> body, int id) async {
+    final url = Uri.http(baseUrl, "/chats/$id");
+    print(body.toString());
+    final response = await http.post(
+      url,
+      body: utf8.encode(json.encode(body)),
+      headers: {
+        HttpHeaders.contentTypeHeader: "application/json",
+        HttpHeaders.authorizationHeader:
+            "Bearer: " + await TokenHandler().getMobileToken(),
+      },
+    );
+
+    if (response.statusCode == 200) {
+      print(response.statusCode);
+    } else {
+      print(response.statusCode);
+      showDialogSingleButton(context, "Unable to post message", "Something went wrong.", "OK");
+      return null;
+    }
   }
 
   likeAnimal(BuildContext context, int id) async {

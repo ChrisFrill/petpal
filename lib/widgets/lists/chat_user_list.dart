@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:PetPal/blocs/chat/chat_bloc.dart';
 import 'package:PetPal/blocs/chat/chat_state.dart';
 import 'package:PetPal/pages/private_chat.dart';
@@ -64,11 +66,13 @@ class _ChatUsersState extends State<ChatUsers> {
                         color: Colors.red,
                       ),
                       onTap: () {
-                        Navigator.of(context).pop();
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => PrivateChat(peerId: index,)),
+                              builder: (context) => PrivateChat(
+                                    peerId: state.chats[index].id,
+                                    username: state.chats[index].animal.name,
+                                  )),
                         );
                       }),
                   scrollDirection: Axis.vertical,

@@ -1,4 +1,3 @@
-
 import 'package:PetPal/blocs/liked/favourite_bloc.dart';
 import 'package:PetPal/blocs/liked/favourite_state.dart';
 import 'package:flutter/material.dart';
@@ -56,11 +55,14 @@ class _LikedPetsState extends State<LikedPets> {
                   itemBuilder: (BuildContext ctxt, int index) => ListTile(
                         title: Text(state.favourites[index].name),
                         leading: CircleAvatar(
-                            backgroundImage: NetworkImage(Uri.http(
+                          backgroundImage: NetworkImage(
+                            Uri.http(
                                     "10.27.99.28:8080",
                                     "/assets/" +
                                         state.favourites[index].photoPath)
-                                .toString())),
+                                .toString(),
+                          ),
+                        ),
                         trailing: Icon(
                           Icons.cancel,
                           color: Colors.red,

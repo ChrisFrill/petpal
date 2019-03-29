@@ -204,14 +204,14 @@ class _SwipeCardState extends State<SwipeCard> with TickerProviderStateMixin {
                     Tooltip(
                       child: FlatButton.icon(
                         icon: IconTheme(
-                          data:
-                              IconThemeData(color: Colors.deepOrange, size: 50),
-                          child: Icon(Icons.favorite),
+                          data: IconThemeData(color: Colors.green, size: 50),
+                          child: Icon(Icons.pets),
                         ),
                         label: Text(""),
                         onPressed: () {
                           PetPalApi().wantToAdoptAnimal(
                               context, state.pets[state.pets.length - 1].id);
+                          swipeRight();
                         },
                       ),
                       message: "Adopt",
@@ -219,8 +219,9 @@ class _SwipeCardState extends State<SwipeCard> with TickerProviderStateMixin {
                     Tooltip(
                       child: FlatButton.icon(
                         icon: IconTheme(
-                          data: IconThemeData(color: Colors.green, size: 50),
-                          child: Icon(Icons.pets),
+                          data:
+                              IconThemeData(color: Colors.deepOrange, size: 50),
+                          child: Icon(Icons.favorite),
                         ),
                         label: Text(""),
                         onPressed: () {
